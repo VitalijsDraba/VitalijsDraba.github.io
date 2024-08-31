@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table Trainer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            font-size: 24px;
+        }
+        .container {
+            max-width: 240px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #display {
+            font-weight: bold;
+            margin: 10px;
+            padding: 10px;
+            min-height: 28px;
+            background-color: #dddddd;
+            border: 1px solid #aaaaaa;
+            border-radius: 8px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 70px);
+            gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .grid button {
+            width: 70px;
+            height: 70px;
+            font-size: 24px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .grid button:hover {
+            background-color: #0056b3;
+        }
+        .btn {
+          background-color: #115511 !important;
+        }
+        #wrong-answer {
+            font-size: 18px;
+            background-color: #ffdddd;
+            border: 1px solid #ffaaaa;
+            border-radius: 8px;
+            display: none;
+        }
+        #wrong-answer p, .counters p {
+            margin: 10px;
+        }
+        .counters {
+            margin: 30px 0 ;
+            font-size: 18px;
+        }
+        #question {
+            font-weight: bold;
+        }
+
+    </style>
+    <script>
+        let num1, num2;
+        let correctCount = 0;
+        let wrongCount = 0;
+        let answer = '';
+
+        function generateQuestion() {
+            num1 = Math.floor(Math.random() * 8) + 2;
+            num2 = Math.floor(Math.random() * 8) + 2;
+
+            document.getElementById('question').innerHTML = `${num1} x ${num2} = ?`;
+            answer = '';
+            document.getElementById('display').innerText = answer;
+            document.getElementById('result').innerHTML = '';
+        }
+
+        function appendNumber(number) {
+            answer += number;
+            document.getElementById('display').innerText = answer;
+        }
+
+        function clearAnswer() {
+            answer = '';
+            document.getElementById('display').innerText = answer;
+        }
+
+        function checkAnswer() {
+            if (answer === '') {
+                return;
+            }
+            const userAnswer = parseInt(answer);
+            const correctAnswer = num1 * num2;
+            document.getElementById('wrong-answer').style.display = 'none';
+            if (userAnswer === correctAnswer) {
+                correctCount++;
+            } else {
+                wrongCount++;
+                displayWrongAnswer(`<p>${num1} x ${num2}</p><p>Your answer: ${answer} <br/>Correct: ${correctAnswer}</p>`);
+            }
+
+            updateCounters();
+            generateQuestion();
+        }
+
+        function updateCounters() {
+            document.getElementById('correct-count').innerText = correctCount;
+            document.getElementById('wrong-count').innerText = wrongCount;
+        }
+
+        function displayWrongAnswer(txt) {
+            document.getElementById('wrong-answer').style.display = 'block';
+            document.getElementById('wrong-answer').innerHTML = txt;
+        }
+
+        window.onload = generateQuestion;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div id="question"></div>
+        <div id="display"></div>
+        <div class="grid">
+            <button onclick="appendNumber(1)">1</button>
+            <button onclick="appendNumber(2)">2</button>
+            <button onclick="appendNumber(3)">3</button>
+            <button onclick="appendNumber(4)">4</button>
+            <button onclick="appendNumber(5)">5</button>
+            <button onclick="appendNumber(6)">6</button>
+            <button onclick="appendNumber(7)">7</button>
+            <button onclick="appendNumber(8)">8</button>
+            <button onclick="appendNumber(9)">9</button>
+            <button onclick="appendNumber(0)">0</button>
+            <button onclick="clearAnswer()" class="btn">del</button>
+            <button onclick="checkAnswer()" class="btn">=</button>
+        </div>
+        <div id="result"></div>
+        <div class="counters">
+            <p>Correct Answers: <span id="correct-count">0</span></p>
+            <p>Wrong Answers: <span id="wrong-count">0</span></p>
+        </div>
+        <div id="wrong-answer"></div>
+    </div>
+</body>
+</html>
